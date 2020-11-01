@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicTacToe-三连棋-添加下棋事件</title>
+    <style>
+        #board{
+            width: 306px;
+            background-color: gray;
+        }
+        .cell{
+            font-size: 50px;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            border: solid 1px #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="board">
+
+    </div>
+</body>
+<script>
+    let pattern = [
+        [2, 0, 0],
+        [0, 1, 0],
+        [0, 0, 0],
+    ]
+    let color = 1;
+    //绘制棋盘 
+    function show() {
+        let board = document.getElementById('board');
+        board.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                let cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.innerText =
+                    pattern[i][j] == 2 ? '❌' :
+                    pattern[i][j] == 1 ? '⭕️' : '';
+                cell.addEventListener('click',()=> play(i,j));
+                board.appendChild(cell);
+            }
+        }
+    }
+    //下棋事件 '⭕️':1 和'❌':2 交替
+    function play(i,j){
+        pattern[i][j] = color;
+        color = 3 - color;
+        show()
+    }
+    show(pattern);
+</script>
+
+</html>

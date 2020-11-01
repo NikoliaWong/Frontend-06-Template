@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红绿灯-callback-未看视频的版本</title>
+    <style>
+        .red {
+            background-color: red;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        li {
+            background-color: black;
+            list-style: none;
+            float: left;
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li id="red" class=""></li>
+        <li id="yellow" class=""></li>
+        <li id="green" class=""></li>
+    </ul>
+</body>
+<script>
+    function light(color, time) {
+        document.getElementById(color).className = color
+    }
+    function offLight(color, time) {
+        document.getElementById(color).className = ''
+    }
+    function init() {
+        light('green')
+        setTimeout(() => {
+            offLight('green')
+            light('yellow')
+            setTimeout(() => {
+                offLight('yellow')
+                light('red')
+                setTimeout(() => {
+                    offLight('red')
+                    init()
+                }, 5000);
+            }, 2000);
+        }, 10000);
+    }
+    init()
+</script>
+
+</html>

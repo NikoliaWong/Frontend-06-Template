@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicTacToe-三连棋-判断胜负</title>
+    <style>
+        #board {
+            width: 306px;
+            background-color: gray;
+        }
+
+        .cell {
+            font-size: 50px;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            border: solid 1px #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="board">
+
+    </div>
+</body>
+<script>
+    let pattern = [
+        [2, 0, 0],
+        [0, 1, 0],
+        [0, 0, 0],
+    ]
+    let color = 1;
+    //绘制棋盘 
+    function show() {
+        let board = document.getElementById('board');
+        board.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                let cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.innerText =
+                    pattern[i][j] == 2 ? '❌' :
+                        pattern[i][j] == 1 ? '⭕️' : '';
+                cell.addEventListener('click', () => play(i, j));
+                board.appendChild(cell);
+            }
+        }
+    }
+    //下棋事件 '⭕️':1 和'❌':2 交替
+    function play(i, j) {
+        //不能重复落子
+        if(pattern[i][j] != ''){
+             alert('不能在此处落子')
+        }else{
+            pattern[i][j] = color;
+        }
+        if (check()) {
+            alert(color == 2 ? '❌ is winner' : '⭕️ is winner')
+        }
+        color = 3 - color;
+        show()
+    }
+    //判断胜负 横、纵、斜棋子一致则胜利
+    function check() {
+        // 判断横排
+        for (let i = 0; i < 3; i++) {
+            let win = true;
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i][j] !== color) {
+                    win = false;
+                }
+            }
+            if (win) {
+                return true;
+            }
+        }
+        // 判断纵列
+        for (let i = 0; i < 3; i++) {
+            let win = true;
+            for (let j = 0; j < 3; j++) {
+                if (pattern[j][i] !== color) {
+                    win = false;
+                }
+            }
+            if (win) {
+                return true;
+            }
+        }
+        // 判断左斜线
+        {
+             let win = true;
+            for (let i = 0; i < 3; i++) {
+               
+                if (pattern[i][i] !== color) {
+                    win = false;
+                }
+            }
+             if (win) {
+                return true;
+            }
+        }
+        // 判断右斜线
+        {
+            let win = true;
+            for (let i = 0; i < 3; i++) {
+                if (pattern[i][2 - i] !== color) {
+                    win = false;
+                }
+            }
+            if (win) {
+                return true;
+            }
+        }
+        return false;
+       
+    }
+    show(pattern);
+</script>
+
+</html>
