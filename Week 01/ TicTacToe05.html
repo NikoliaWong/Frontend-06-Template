@@ -31,7 +31,7 @@
 </body>
 <script>
     let pattern = [
-        [0, 2, 0],
+        [0, 0, 2],
         [0, 1, 0],
         [0, 0, 0],
     ]
@@ -139,7 +139,7 @@
                     temp[i][j] = color;
                     if (check(temp, color)) {
                         // return true
-                        return [j, i]
+                        return [i, j]
                     }
                 }
             }
@@ -167,16 +167,8 @@
                     let r = bestChoice(temp, 3 - color).result;
                     if (-r > result) { //？？？
                         result = -r;
-                        point = [j, i]
+                        point = [i, j]
                     }
-                     // 再次剪枝，如果已经是赢了的局面则直接退出循环
-                    if (result === 1) break outer;
-                    // if(r == 1){//若已经找到可以胜的点 就不用继续找下去
-                    //     return {
-                    //          point :[j, i],
-                    //          result:1
-                    //     }
-                    // }
                 }
             }
         }
