@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6.寻路 | 启发式搜索（二）</title>
+    <style>
+        .cell {
+            width: 6px;
+            height: 6px;
+            border-right: 1px solid #fff;
+            border-bottom: 1px solid #fff;
+            background-color: gray;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #container {
+            width: 701px;
+            line-height: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <button onclick="localStorage['map']=JSON.stringify(map)">save</button>
+</body>
+<script>
+    class Sorted {
+        constructor(data, compare) {
+            this.data = data.slice();
+            this.compare = compare || ((a, b) => a - b);
+        }
+        take() {
+            if (!this.data.length) {
+                return;
+            }
+            let min = this.data[0];
+            let minIndex = 0;
+            for (let i = 1; i < this.data.length; i++) {
+                if (this.compare(this.data[i], min) < 0) {
+                    min = this.data[i];
+                    minIndex = i;
+                }
+            }
+            this.data[minIndex] = this.data[this.data.length - 1];
+            this.data.pop();
+            return min;
+        }
+        give(v){
+            this.data.push(v);
+        }
+        get length(){
+            return this.data.length;
+        }
+    }
+
+    // let map = Array(10000).fill(0);//新建一个100✖100的数组 用一维数组表示 数组的每个值替换为0
+    // 读取存储中的地图数据
+    let map = localStorage['map'] ? JSON.parse(localStorage['map']) : Array(10000).fill(0);
+    console.log(map)
+    let container = document.getElementById('container');
+    for (let y = 0; y < 100; y++) {
+        for (let x = 0; x < 100; x++) {
+            let cell = document.createElement('div');
+            cell.classList.add('cell');
+
+            //利用同余特性，用一维数组表示二维矩阵
+            if (map[100 * y + x] == 1) {//找到该点对应在地图中的位置
+                cell.style.backgroundColor = 'black'
+            }
+            cell.addEventListener('mousemove', () => {
+                if (mousedown) {//左键按住的时候移动才划线
+                    if (clear) {//右键按住的时候移动清除画笔
+                        cell.style.backgroundColor = '';
+                        map[100 * y + x] = 0;
+                    } else {
+                        cell.style.backgroundColor = 'black';//视觉上的变黑
+                        map[100 * y + x] = 1;//逻辑上这个点由0变成1
+                    }
+
+                }
+
+            })
+            container.appendChild(cell);
+
+        }
+    }
+    let mousedown = false;
+    let clear = false;
+
+    //鼠标按下的时候
+    document.addEventListener('mousedown', e => {
+        mousedown = true;
+        // 判断是否为右键事件
+        clear = (e.which === 3)//右键事件event值为3
+    })
+    //鼠标松开的时候
+    document.addEventListener('mouseup', () => {
+        mousedown = false;
+    })
+    //取消鼠标默认的右键事件
+    document.addEventListener('contextmenu', e => {
+        e.preventDefault();
+    })
+
+    function sleep(t) {
+        return new Promise(function (resolve) {
+            setTimeout(resolve, t);
+        })
+
+    }
+
+    async function findPath(map, start, end) {
+        let table = Object.create(map)
+        //起点 终点 标注为红色
+        container.children[start[1] * 100 + start[0]].style.backgroundColor = 'red'
+        container.children[end[1] * 100 + end[0]].style.backgroundColor = 'red'
+        let queue = new Sorted([start],(a,b)=>distance(a)-distance(b));
+   
+        async function insert(x, y, pre) {
+            //遇到边 则加入不了
+            if (x < 0 || x >= 100 || y < 0 || y >= 100) {
+                return;
+            }
+            //若遇到地图中的“墙” 值为1或者2的点 
+            if (table[y * 100 + x]) {
+                return;
+            }
+            // await sleep(20);
+            container.children[y * 100 + x].style.backgroundColor = 'lightgreen'
+            //新节点 由0改为2 不改成1是为了避免找重复的点
+            // map[y * 100 + x] = 2;
+            table[y * 100 + x] = pre;
+            queue.give([x, y]);
+        }
+        function distance(point) {
+            return (point[0]-end[0])**2+(point[1]-end[1])**2;
+        }
+        while (queue.length) {
+            let [x, y] = queue.take();//从队列里取出一个元素
+            console.log(x, y);
+            //从end节点一个个找它的前驱节点 一直去找到start
+            if (x === end[0] && y === end[1]) {
+                let path = [];
+                while (x != start[0] || y != start[1]) {
+                    path.push(map[100 * y + x]);
+                    [x, y] = table[100 * y + x];
+
+                    await sleep(20);
+                    container.children[y * 100 + x].style.backgroundColor = 'blue'
+
+                }
+
+                return path;
+            }
+            //如果不是 则上下左右
+            await insert(x, y - 1, [x, y]);
+            await insert(x, y + 1, [x, y]);
+            await insert(x - 1, y, [x, y]);
+            await insert(x + 1, y, [x, y]);
+            // 左上左下右上右下也加进入
+            await insert(x - 1, y - 1, [x, y]);
+            await insert(x - 1, y + 1, [x, y]);
+            await insert(x + 1, y - 1, [x, y]);
+            await insert(x + 1, y + 1, [x, y]);
+
+        }
+        return null;
+    }
+    // findPath(map,[0,0],[35,35])
+</script>
+
+</html>
