@@ -130,12 +130,13 @@
                 return;
             }
             // await sleep(20);
-            container.children[y * 100 + x].style.backgroundColor = 'lightgreen'
+            container.children[y * 100 + x].style.backgroundColor = 'lightgreen';
             //新节点 由0改为2 不改成1是为了避免找重复的点
             // map[y * 100 + x] = 2;
             table[y * 100 + x] = pre;
             queue.give([x, y]);
         }
+        //算出点到end节点的距离 compare函数比较 因为都大于1所以不用开根号 节省运算
         function distance(point) {
             return (point[0]-end[0])**2+(point[1]-end[1])**2;
         }
@@ -150,7 +151,7 @@
                     [x, y] = table[100 * y + x];
 
                     await sleep(20);
-                    container.children[y * 100 + x].style.backgroundColor = 'blue'
+                    container.children[y * 100 + x].style.backgroundColor = 'blue';
 
                 }
 

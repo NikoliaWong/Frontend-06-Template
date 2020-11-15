@@ -117,13 +117,12 @@
                 let path = [];
                 while (x != start[0] || y != start[1]) {
                     path.push(map[100*y+x]);
-                    [x,y] = table[100 * y + x];
-
+                    [x,y] = table[100 * y + x];//x,y标记为前驱节点！！！
                     await sleep(20);
                     container.children[y * 100 + x].style.backgroundColor = 'blue'
 
                 }
-               
+                console.log('path',path);
                 return path;
             }
             //如果不是 则上下左右
@@ -131,7 +130,7 @@
             await insert(x, y + 1, [x, y]);
             await insert(x - 1, y, [x, y]);
             await insert(x + 1, y, [x, y]);
-            // 左上左下右上右下也加进入
+            // 左上左下右上右下也加入
             await insert(x - 1, y - 1, [x, y]);
             await insert(x - 1, y + 1, [x, y]);
             await insert(x + 1, y - 1, [x, y]);

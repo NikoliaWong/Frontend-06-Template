@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2、使用LL算法构建AST | LL词法分析</title>
+</head>
+
+<body>
+</body>
+<script>
+    var regexp = /([0-9\.]+)|([ \t]+)|([\r\n]+)|(\*)|(\/)|(\+)|(\-)|/g;
+    var dictionary = ['Number', 'whitespace', 'LineTerminary', '*', '/', '+', '-'];
+    function* tokenize(source) {
+        var result = null;
+        let lastIdx = 0;
+        while (true) {
+            lastIdx = regexp.lastIndex;//记录下次匹配的起点
+            result = regexp.exec(source);
+            //未匹配出字符 break
+            if (!result[0]) //空字符串，中间有空格时布尔值是true
+                break;
+            //匹配出不认识的字符 break
+            if (regexp.lastIndex - lastIdx > result[0].length)// ！！！
+                break;
+
+            let token = {
+                type:null,
+                value:null
+            }
+            for (var i = 1; i < dictionary.length; i++) {
+                if (result[i]) {
+                     token.type = dictionary[i-1];
+                    console.log(dictionary[i-1]);
+                }
+            }
+            token.value = result[0];
+
+            yield token;//js新特性 返回一个序列
+        }
+    }
+    for(let token of tokenize("1024 + 10 * 12")){
+        console.log(token);
+    }
+</script>
+
+</html>

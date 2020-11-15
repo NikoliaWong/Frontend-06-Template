@@ -5,3 +5,6 @@
 
 # 2. 寻路算法
     传入pre 存进table 沿着pre的链路找到路径
+
+# 3. Array.slice() 
+    slice起始位置没标注 用来复制一个数组

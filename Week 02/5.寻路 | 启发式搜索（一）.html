@@ -30,7 +30,7 @@
 <script>
     class Sorted {
         constructor(data,compare){
-            this.data = data.slice();
+            this.data = data.slice();//slice起始位置没标注 用来复制一个数组
             this.compare = compare||((a,b) => a-b);
         }
         take(){
@@ -45,9 +45,15 @@
                     minIndex = i;
                 }
             }
-            this.data[minIndex] = this.data[this.data.length-1];
+            this.data[minIndex] = this.data[this.data.length-1];//？？？
             this.data.pop();
             return min;
+        }
+        give(v) {
+            this.data.push(v);//push是成本最小的写操作
+        }
+        get length() {
+            return this.data.length;
         }
     }   
     // 测试
