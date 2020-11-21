@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.字符串分析算法 | KMP字符串模式匹配算法</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function kmp(source, pattern) {
+        //计算跳转表格
+        let table = new Array(pattern.length).fill(0);
+        {
+            let i = 1, j = 0;//从i开始算自重复的数字，j表示已重复
+            //abcdabce aabaaac
+            while (i < pattern.length) {
+                if (pattern[i] === pattern[j]) {
+                    ++j, ++i;
+                    table[i] = j;
+                } else {
+                    if (j > 0) {
+                        j = table[j];
+                    } else {
+                        ++i;
+                    }
+                }
+            }
+        }
+        console.log(table)
+        //模式匹配
+        {
+            let i = 0, j = 0;//i认为是source的位置 j认为是pattern的位置
+            while (i< source.length) {
+                if (pattern[j]===source[i]) {
+                    ++i,++j
+                }else{
+                     if (j > 0) {
+                        j = table[j];
+                    } else {
+                        ++i;
+                    }
+                }
+                if (j=== pattern.length) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    // kmp('', 'aabaaac')
+    //a a b a a a c
+    //0 0 1 0 1 2 2
+    console.log(kmp('Hello', 'll'))
+    console.log(kmp('aabaabaaacx', 'aabaaac'))
+    console.log(kmp('abc', 'abc'))
+</script>
+
+</html>
