@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1. proxy与双向绑定 | proxy的基本用法</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let object = {
+        a:1,
+        b:2
+    }
+    let po = new Proxy(object,{
+        set(obj,prop,val){
+            console.log(obj,prop,val)
+        }
+    })
+    po.a = 3;
+    console.log(object,po)
+    po.x = 5;
+
+</script>
+</html>
