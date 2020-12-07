@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>练习：用 JavaScript 去设计狗咬人的代码</title>
+</head>
+<body>
+    <script>
+        class Dog {
+                constructor(name, damage) {
+                    this.name = name;
+                    this.damage = damage;
+                }
+
+                bit() {
+                    return this.damage;
+                }
+            }
+
+            class Person {
+                constructor(name) {
+                    this.hp = 100;
+                    this.name = name;
+                }
+
+                hurt(damage) {
+                    if (this.hp > damage) {
+                        this.hp -= damage;
+                        console.log("还剩", this.hp, "生命值");
+                    } else {
+                        this.hp = 0;
+                        console.log("game over");
+                    }
+                }
+            }
+
+            let dog = new Dog("旺财", 30);
+            let person = new Person("King");
+
+            person.hurt(dog.bit());
+            person.hurt(dog.bit());
+            person.hurt(dog.bit());
+            person.hurt(dog.bit());
+
+    </script>
+</body>
+</html>

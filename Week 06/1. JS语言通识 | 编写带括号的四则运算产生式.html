@@ -1,0 +1,13 @@
+<!-- "1+2*(3+4)" -->
+
+<BracketExpression>::=<Number>|
+        "("<AddiveExpression>")"|
+
+<AdditiveExpression>::=<MultiplicativeExpression>|
+        <AdditiveExpression>"+"<MultiplicativeExpression>|
+        <AdditiveExpression>"-"<MultiplicativeExpression>
+
+<MultiplicativeExpression>::=<BracketExpression>|
+        <MultiplicativeExpression>"*"<BracketExpression>|
+        <MultiplicativeExpression>"/"<BracketExpression>
+
