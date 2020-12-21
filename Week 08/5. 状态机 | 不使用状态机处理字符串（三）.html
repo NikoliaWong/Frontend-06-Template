@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不准使用正则表达式，纯粹用 JavaScript 的逻辑实现：在一个字符串中，找到字符“abcdef”</title>
+</head>
+<body>
+    <script>
+        function findStr(string) {
+            let foundA = false;
+            let foundB = false;
+            let foundC = false;
+            let foundD = false;
+            let foundE = false;
+            let foundF = false;
+            for (let s of string) {
+                if (s == 'a') {
+                    foundA = true
+                } else if (foundA && s == 'b') {
+                    foundB = true
+                } else if (foundB && s == 'c') {
+                    foundC = true
+                } else if (foundC && s == 'd') {
+                    foundD = true
+                } else if (foundD && s == 'e') {
+                    foundE = true
+                } else if (foundD && s == 'f') {
+                    foundf = true
+                    return true
+                } else {
+                    foundA = false;
+                    foundB = false;
+                    foundC = false;
+                    foundD = false;
+                    foundE = false;
+                    foundF = false;
+                }
+            }
+            return false
+        }
+
+        console.log(findStr('ababcdef'))
+    </script>
+</body>
+</html>

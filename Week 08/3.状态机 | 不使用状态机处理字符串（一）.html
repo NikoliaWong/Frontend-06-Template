@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在一个字符串中，找到字符”a”</title>
+</head>
+<body>
+    <script>
+        //字符串中查找字符‘a’
+        function findCh(string, char) {
+            for (let s of string) {
+                if (s === char) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        console.log(findCh("hello world", 'a'))
+    </script>
+</body>
+</html>
